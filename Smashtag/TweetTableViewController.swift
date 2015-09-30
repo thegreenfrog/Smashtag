@@ -114,6 +114,25 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate
 
         return cell
     }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if let destination = segue.destinationViewController as? UITableViewController {
+            if let identifier = segue.identifier {
+                if identifier == "Show Detail" {
+                    print("segue to detail")
+                    if let detail = destination as? TweetDetailTableViewController {
+                        let path = self.tableView.indexPathForSelectedRow!
+                        let selectedTweet = tweets[path.section][path.row]
+                        print(selectedTweet.text)
+                        detail.tweet = selectedTweet
+                        
+                        //pass name of person who tweeted to the title of nav controller
+                    }
+                    
+                }
+            }
+        }
+    }
 
     /*
     // Override to support conditional editing of the table view.
