@@ -58,7 +58,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate
             request.fetchTweets { (newTweets) -> Void in
                 dispatch_async(dispatch_get_main_queue()) { () -> Void in
                     if newTweets.count > 0 {
-                        self.lastSuccessfulRequest = request // oops, forgot this line in lecture
+                        self.lastSuccessfulRequest = request
                         self.tweets.insert(newTweets, atIndex: 0)
                         self.tableView.reloadData()
                     }
@@ -120,13 +120,12 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate
             if let identifier = segue.identifier {
                 if identifier == "Show Detail" {
                     print("segue to detail")
-                    if let detail = destination as? TweetDetailTableViewController {
+                    if let dest = destination as? TweetDetailTableViewController {
                         let path = self.tableView.indexPathForSelectedRow!
                         let selectedTweet = tweets[path.section][path.row]
                         print(selectedTweet.text)
-                        detail.tweet = selectedTweet
-                        
-                        //pass name of person who tweeted to the title of nav controller
+                        dest.setTweetDetails(selectedTweet)
+                        dest.title = selectedTweet.user!.name
                     }
                     
                 }
