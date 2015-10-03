@@ -89,7 +89,8 @@ class TweetDetailTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        var title: UILabel = UILabel()
+        let title: UILabel = UILabel()
+        title.backgroundColor = UIColor.lightGrayColor()
         let information = details[section]
         switch information {
         case .Image(_):
@@ -104,21 +105,37 @@ class TweetDetailTableViewController: UITableViewController {
         return title
     }
     
-    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 20.0
-    }
-
-    
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         //create different cell for Image and everything else
-        let cell = tableView.dequeueReusableCellWithIdentifier("DetailCell", forIndexPath: indexPath)
-
-        // Configure the cell...
-        cell.textLabel?.text = "Section \(indexPath.section) Row \(indexPath.row)"
-
-        return cell
+        let type = details[indexPath.section]
+        switch type {
+        case .Image(let media):
+            let cell = tableView.dequeueReusableCellWithIdentifier("DetailImageCell", forIndexPath: indexPath) as! TweetDetailImageTableViewCell
+            cell.ImageUrl = media[indexPath.row].url
+            return cell
+        case .Hastag(let list):
+            let cell = tableView.dequeueReusableCellWithIdentifier("DetailCell", forIndexPath: indexPath)
+            cell.textLabel?.text = list[indexPath.row].keyword
+            return cell
+        case .Url(let list):
+            let cell = tableView.dequeueReusableCellWithIdentifier("DetailCell", forIndexPath: indexPath)
+            cell.textLabel?.text = list[indexPath.row].keyword
+            return cell
+        case .Users(let list):
+            let cell = tableView.dequeueReusableCellWithIdentifier("DetailCell", forIndexPath: indexPath)
+            cell.textLabel?.text = list[indexPath.row].keyword
+            return cell
+        }
     }
-
+    
+//    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+//        if indexPath.section == 0 {
+//            return 
+//        }
+//        else {
+//            return UITableViewAutomaticDimension
+//        }
+//    }
 
     /*
     // Override to support conditional editing of the table view.
