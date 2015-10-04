@@ -8,21 +8,30 @@
 
 import UIKit
 
+protocol tweetSearchDelegate: class {
+    func passSearchKey(key: String)
+}
+
 class TweetTableViewController: UITableViewController, UITextFieldDelegate
 {
     // MARK: - Public API
     
     var tweets = [[Tweet]]()
+    
+    let SearchHistory = recentSearches.sharedInstances
 
     var searchText: String? = "#stanford" {
         didSet {
             lastSuccessfulRequest = nil
             searchTextField?.text = searchText
+            SearchHistory.addKey(searchText!)
             tweets.removeAll()
             tableView.reloadData() // clear out the table view
             refresh()
         }
     }
+    
+    var recentSearchDelegate: tweetSearchDelegate?
     
     // MARK: - View Controller Lifecycle
 
