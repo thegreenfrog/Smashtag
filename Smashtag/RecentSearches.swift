@@ -13,6 +13,14 @@ class recentSearches {
     
     var searchKeys = [String]()
     func addKey(key: String) -> Void {
-        searchKeys.insert(key, atIndex: 0)
+        var tempList = searchKeys
+        if let index = tempList.indexOf(key) {
+            tempList.removeAtIndex(index)
+        }
+        tempList.insert(key, atIndex: 0)
+        if tempList.count > 50 {
+            tempList.removeLast()
+        }
+        searchKeys = tempList
     }
 }
