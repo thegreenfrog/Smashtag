@@ -116,28 +116,30 @@ class TweetDetailTableViewController: UITableViewController {
             cell.ImageUrl = media[indexPath.row].url
             return cell
         case .Hastag(let list):
-            let cell = tableView.dequeueReusableCellWithIdentifier("DetailCell", forIndexPath: indexPath)
+            let cell = tableView.dequeueReusableCellWithIdentifier("DetailCell", forIndexPath: indexPath) as! TweetDetailTableViewCell
             cell.textLabel?.text = list[indexPath.row].keyword
             return cell
         case .Url(let list):
-            let cell = tableView.dequeueReusableCellWithIdentifier("DetailCell", forIndexPath: indexPath)
+            let cell = tableView.dequeueReusableCellWithIdentifier("DetailCell", forIndexPath: indexPath) as! TweetDetailTableViewCell
             cell.textLabel?.text = list[indexPath.row].keyword
             return cell
         case .Users(let list):
-            let cell = tableView.dequeueReusableCellWithIdentifier("DetailCell", forIndexPath: indexPath)
+            let cell = tableView.dequeueReusableCellWithIdentifier("DetailCell", forIndexPath: indexPath) as! TweetDetailTableViewCell
             cell.textLabel?.text = list[indexPath.row].keyword
             return cell
         }
     }
     
-//    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-//        if indexPath.section == 0 {
-//            return 
-//        }
-//        else {
-//            return UITableViewAutomaticDimension
-//        }
-//    }
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        let type = details[indexPath.section]
+        switch type {
+        case .Image(let images):
+            return tableView.bounds.size.width / CGFloat(images[indexPath.row].aspectRatio)
+        default:
+            return UITableViewAutomaticDimension
+        }
+    }
+    
 
     /*
     // Override to support conditional editing of the table view.
@@ -174,14 +176,35 @@ class TweetDetailTableViewController: UITableViewController {
     }
     */
 
-    /*
-    // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+     //MARK: - Navigation
+
+     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if let destination = segue.destinationViewController as? UITableViewController {
+            if let identifier = segue.identifier {
+                if identifier == "SearchMention" {
+                    if let _ = destination as? TweetTableViewController {
+                        let path = self.tableView.indexPathForSelectedRow!
+                        let section = details[path.section]
+                        if let nextVC = destination as? TweetTableViewController {
+                            switch section {
+                            case .Hastag(let hashtags):
+                                let searchKey = hashtags[path.row]
+                                nextVC.searchText = searchKey.keyword
+                            case .Users(let username):
+                                let searchKey = username[path.row]
+                                nextVC.searchText = searchKey.keyword
+                            default:
+                                break
+                            }
+                        }
+
+                    }
+                    
+                }
+            }
+        }
     }
-    */
+
 
 }

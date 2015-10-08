@@ -8,9 +8,6 @@
 
 import UIKit
 
-protocol tweetSearchDelegate: class {
-    func passSearchKey(key: String)
-}
 
 class TweetTableViewController: UITableViewController, UITextFieldDelegate
 {
@@ -20,7 +17,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate
     
     let SearchHistory = recentSearches.sharedInstances
 
-    var searchText: String? = "#stanford" {
+    var searchText: String? = "#Bowdoin" {
         didSet {
             lastSuccessfulRequest = nil
             searchTextField?.text = searchText
@@ -30,8 +27,6 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate
             refresh()
         }
     }
-    
-    var recentSearchDelegate: tweetSearchDelegate?
     
     // MARK: - View Controller Lifecycle
 

@@ -9,7 +9,7 @@
 import UIKit
 
 
-class RecentHistoryTableViewController: UITableViewController, tweetSearchDelegate {
+class RecentHistoryTableViewController: UITableViewController {
     
     let searchHistory = recentSearches.sharedInstances
     
@@ -53,10 +53,6 @@ class RecentHistoryTableViewController: UITableViewController, tweetSearchDelega
         return cell
     }
     
-    func passSearchKey(let key: String) {
-        searchHistory.searchKeys.append(key)
-        print(key)
-    }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if let destination = segue.destinationViewController as? UITableViewController {

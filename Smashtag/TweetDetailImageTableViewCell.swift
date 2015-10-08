@@ -10,7 +10,11 @@ import UIKit
 
 class TweetDetailImageTableViewCell: UITableViewCell {
 
-    @IBOutlet weak var detailImage: UIImageView!
+    @IBOutlet weak var detailImage: UIImageView! {
+        didSet {
+            print("image set")
+        }
+    }
     
     var ImageUrl: NSURL! {
         didSet {
@@ -25,18 +29,17 @@ class TweetDetailImageTableViewCell: UITableViewCell {
 
     override func setSelected(selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
+        
         // Configure the view for the selected state
     }
-
+    
     func updateImage() {
-        detailImage.image = nil
+        detailImage?.image = nil
         dispatch_async(dispatch_get_global_queue(Int(QOS_CLASS_UTILITY.rawValue), 0)) {
             if let imageData = NSData(contentsOfURL: self.ImageUrl) {
                 dispatch_async(dispatch_get_main_queue()) {
-                    self.detailImage.contentMode = .ScaleAspectFit
-                    self.detailImage.image = UIImage(data: imageData)
-                    self.detailImage.sizeToFit()
+                    self.detailImage?.image = UIImage(data: imageData)
+                    
                 }
                 
             }
