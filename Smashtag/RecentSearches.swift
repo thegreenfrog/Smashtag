@@ -18,7 +18,7 @@ class recentSearches {
 //            tempList.removeAtIndex(index)
 //        }
         searchKeys.insert(key, atIndex: 0)
-        if searchKeys.count > 3 {
+        if searchKeys.count > 20 {
             searchKeys.removeAtIndex(searchKeys.count - 1)
         }
 //        searchKeys = tempList

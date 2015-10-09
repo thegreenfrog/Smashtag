@@ -120,7 +120,7 @@ class TweetDetailTableViewController: UITableViewController {
             cell.textLabel?.text = list[indexPath.row].keyword
             return cell
         case .Url(let list):
-            let cell = tableView.dequeueReusableCellWithIdentifier("DetailCell", forIndexPath: indexPath) as! TweetDetailTableViewCell
+            let cell = tableView.dequeueReusableCellWithIdentifier("DetailURLCell", forIndexPath: indexPath) as! TweetDetailTableViewCell
             cell.textLabel?.text = list[indexPath.row].keyword
             return cell
         case .Users(let list):
@@ -203,6 +203,35 @@ class TweetDetailTableViewController: UITableViewController {
                     
                 }
             }
+        }  else {
+            if let identifier = segue.identifier {
+                if identifier == "showURL" {
+                    if let nextVC = segue.destinationViewController as? WebViewController {
+                        let path = self.tableView.indexPathForSelectedRow!
+                        let section = details[path.section]
+                        switch section {
+                        case .Url(let link):
+                            let urlSource = link[path.row]
+                            nextVC.webURL = NSURL(string: urlSource.keyword)
+                        default:
+                            break
+                        }
+                    }
+                } else if identifier == "PanImage" {
+                    if let nextVC = segue.destinationViewController as? ImageViewController {
+                        let path = self.tableView.indexPathForSelectedRow!
+                        let section = details[path.section]
+                        switch section {
+                        case .Image(let imageLink):
+                            let urlSource = imageLink[path.row]
+                            nextVC.imageURL = urlSource.url
+                        default:
+                            break
+                        }
+                    }
+                }
+            }
+            
         }
     }
 
